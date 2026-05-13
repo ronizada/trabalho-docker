@@ -7,25 +7,27 @@ async function carregarPedidos() {
     lista.innerHTML = '';
     
     pedidos.forEach(pedido => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <div>
-                <strong style="display:block">${pedido.cliente}</strong>
-                <span class="status-badge">${pedido.status}</span>
+        const statusClass = pedido.status.toLowerCase().replace(/\s+/g, '-');
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+            <div class="card-info">
+                <strong>${pedido.cliente}</strong>
+                <span class="badge status-${statusClass}">${pedido.status}</span>
             </div>
-            <div class="actions">
-                <button class="btn-edit" onclick="abrirModalEditar(${pedido.id}, '${pedido.cliente}', '${pedido.status}')">Editar</button>
-                <button class="btn-delete" onclick="abrirModalExcluir(${pedido.id})">Excluir</button>
+            <div class="card-actions">
+                <button class="btn-card-edit" onclick="abrirModalEditar(${pedido.id}, '${pedido.cliente}', '${pedido.status}')">✏️ Editar</button>
+                <button class="btn-card-delete" onclick="abrirModalExcluir(${pedido.id})">🗑️ Excluir</button>
             </div>
         `;
-        lista.appendChild(li);
+        lista.appendChild(div);
     });
 }
 
 async function criarPedido() {
     const cliente = document.getElementById('cliente').value;
     const status = document.getElementById('status').value;
-    if(!cliente) return alert('Informe o nome do cliente!');
+    if(!cliente) return alert('Por favor, digite o nome do cliente.');
 
     await fetch(apiUrl, {
         method: 'POST',
@@ -81,7 +83,7 @@ async function confirmarExclusao() {
     carregarPedidos();
 }
 
-// Fechar modais ao clicar fora
+// Fechar ao clicar fora
 window.onclick = function(event) {
     if (event.target.className === 'modal') {
         fecharModal();

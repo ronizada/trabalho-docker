@@ -3,64 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Pedidos | Grupo 6</title>
+    <title>Sistema de Pedidos | Grupo 6</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Controle de Pedidos</h1>
+        <header>
+            <h1>📦 Controle de Pedidos</h1>
+            <p>Gerenciamento de ordens de serviço - Roni Herculano</p>
+        </header>
         
-        <div class="form-container">
-            <h3>Novo Pedido</h3>
-            <div>
-                <label>Cliente</label>
-                <input type="text" id="cliente" placeholder="Nome do Cliente">
+        <div class="form-card">
+            <h3>✨ Novo Pedido</h3>
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>Cliente</label>
+                    <input type="text" id="cliente" placeholder="Ex: Roni Junior">
+                </div>
+                <div class="input-group">
+                    <label>Status Inicial</label>
+                    <select id="status">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+                <button class="btn-main" onclick="criarPedido()">Criar Pedido</button>
             </div>
-            <div>
-                <label>Status</label>
-                <select id="status">
-                    <option value="Pendente">Pendente</option>
-                    <option value="Em Andamento">Em Andamento</option>
-                    <option value="Concluído">Concluído</option>
-                </select>
-            </div>
-            <button onclick="criarPedido()">Salvar Pedido</button>
         </div>
 
-        <div class="list-container">
-            <h3>Lista de Pedidos</h3>
-            <ul id="lista-pedidos"></ul>
+        <div class="list-section">
+            <h3>📋 Pedidos Ativos</h3>
+            <div id="lista-pedidos" class="grid-list">
+                </div>
         </div>
     </div>
 
     <div id="modal-editar" class="modal">
         <div class="modal-content">
-            <h3>Editar Pedido</h3>
+            <div class="modal-header">
+                <h3>Editar Registro</h3>
+                <span class="close" onclick="fecharModal()">&times;</span>
+            </div>
             <input type="hidden" id="edit-id">
-            <label>Nome do Cliente</label>
-            <input type="text" id="edit-cliente">
-            <label>Status</label>
-            <select id="edit-status">
-                <option value="Pendente">Pendente</option>
-                <option value="Em Andamento">Em Andamento</option>
-                <option value="Concluído">Concluído</option>
-            </select>
-            <div class="modal-actions">
-                <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
-                <button onclick="salvarEdicao()">Confirmar</button>
+            <div class="input-group">
+                <label>Nome do Cliente</label>
+                <input type="text" id="edit-cliente">
+            </div>
+            <div class="input-group">
+                <label>Status do Pedido</label>
+                <select id="edit-status">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Concluído">Concluído</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+                <button class="btn-save" onclick="salvarEdicao()">Salvar Alterações</button>
             </div>
         </div>
     </div>
 
     <div id="modal-excluir" class="modal">
-        <div class="modal-content">
-            <h3>Excluir Pedido</h3>
-            <p>Tem certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.</p>
+        <div class="modal-content confirm-modal">
+            <div class="icon-warning">⚠️</div>
+            <h3>Tem certeza?</h3>
+            <p>Você está prestes a excluir este pedido. Esta ação é irreversível.</p>
             <input type="hidden" id="delete-id">
-            <div class="modal-actions">
-                <button class="btn-secondary" onclick="fecharModalExcluir()">Cancelar</button>
-                <button class="btn-delete" onclick="confirmarExclusao()">Sim, Excluir</button>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="fecharModalExcluir()">Voltar</button>
+                <button class="btn-danger" onclick="confirmarExclusao()">Sim, Excluir</button>
             </div>
         </div>
     </div>
