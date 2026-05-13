@@ -3,77 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pedidos | Grupo 6</title>
+    <title>📦 Delivery Manager | Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="background-blob"></div>
+    
     <div class="container">
-        <header>
-            <h1>📦 Controle de Pedidos</h1>
-            <p>Gerenciamento de ordens de serviço - Roni Herculano</p>
+        <header class="main-header">
+            <div class="logo-area">
+                <span class="logo-icon">🚀</span>
+                <div>
+                    <h1>DashOrders</h1>
+                    <p>Logística & Controle • Grupo 6</p>
+                </div>
+            </div>
+            <div class="user-profile">
+                <span>Olá, <strong>Roni Herculano</strong></span>
+            </div>
         </header>
         
-        <div class="form-card">
-            <h3>✨ Novo Pedido</h3>
-            <div class="grid-form">
-                <div class="input-group">
-                    <label>Cliente</label>
-                    <input type="text" id="cliente" placeholder="Ex: Roni Junior">
+        <main class="dashboard-grid">
+            <aside class="side-panel">
+                <div class="glass-card">
+                    <h3>➕ Novo Registro</h3>
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        <input type="text" id="cliente" placeholder="Nome completo...">
+                    </div>
+                    <div class="form-group">
+                        <label>Prioridade/Status</label>
+                        <select id="status">
+                            <option value="Pendente">⏳ Pendente</option>
+                            <option value="Em Andamento">⚙️ Em Andamento</option>
+                            <option value="Concluído">✅ Concluído</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="criarPedido()">Lançar Pedido</button>
                 </div>
-                <div class="input-group">
-                    <label>Status Inicial</label>
-                    <select id="status">
-                        <option value="Pendente">Pendente</option>
-                        <option value="Em Andamento">Em Andamento</option>
-                        <option value="Concluído">Concluído</option>
-                    </select>
-                </div>
-                <button class="btn-main" onclick="criarPedido()">Criar Pedido</button>
-            </div>
-        </div>
+            </aside>
 
-        <div class="list-section">
-            <h3>📋 Pedidos Ativos</h3>
-            <div id="lista-pedidos" class="grid-list">
+            <section class="content-panel">
+                <div class="section-title">
+                    <h3>📦 Pedidos em Fluxo</h3>
+                    <span id="order-count" class="count-badge">0 total</span>
                 </div>
-        </div>
+                <div id="lista-pedidos" class="orders-container">
+                    </div>
+            </section>
+        </main>
     </div>
 
-    <div id="modal-editar" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Editar Registro</h3>
-                <span class="close" onclick="fecharModal()">&times;</span>
-            </div>
+    <div id="modal-editar" class="modal-overlay">
+        <div class="modal-card">
+            <h3>✏️ Atualizar Pedido</h3>
             <input type="hidden" id="edit-id">
-            <div class="input-group">
-                <label>Nome do Cliente</label>
+            <div class="form-group">
+                <label>Cliente</label>
                 <input type="text" id="edit-cliente">
             </div>
-            <div class="input-group">
-                <label>Status do Pedido</label>
+            <div class="form-group">
+                <label>Status</label>
                 <select id="edit-status">
-                    <option value="Pendente">Pendente</option>
-                    <option value="Em Andamento">Em Andamento</option>
-                    <option value="Concluído">Concluído</option>
+                    <option value="Pendente">⏳ Pendente</option>
+                    <option value="Em Andamento">⚙️ Em Andamento</option>
+                    <option value="Concluído">✅ Concluído</option>
                 </select>
             </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-                <button class="btn-save" onclick="salvarEdicao()">Salvar Alterações</button>
+            <div class="modal-btns">
+                <button class="btn-ghost" onclick="fecharModal()">Voltar</button>
+                <button class="btn-primary" onclick="salvarEdicao()">Salvar</button>
             </div>
         </div>
     </div>
 
-    <div id="modal-excluir" class="modal">
-        <div class="modal-content confirm-modal">
-            <div class="icon-warning">⚠️</div>
-            <h3>Tem certeza?</h3>
-            <p>Você está prestes a excluir este pedido. Esta ação é irreversível.</p>
+    <div id="modal-excluir" class="modal-overlay">
+        <div class="modal-card alert">
+            <div class="alert-icon">🗑️</div>
+            <h3>Remover Registro?</h3>
+            <p>Esta ação não poderá ser revertida no banco de dados.</p>
             <input type="hidden" id="delete-id">
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="fecharModalExcluir()">Voltar</button>
+            <div class="modal-btns">
+                <button class="btn-ghost" onclick="fecharModalExcluir()">Cancelar</button>
                 <button class="btn-danger" onclick="confirmarExclusao()">Sim, Excluir</button>
             </div>
         </div>

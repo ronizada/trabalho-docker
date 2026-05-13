@@ -4,42 +4,44 @@ async function carregarPedidos() {
     const res = await fetch(apiUrl);
     const pedidos = await res.json();
     const lista = document.getElementById('lista-pedidos');
-    lista.innerHTML = '';
+    const counter = document.getElementById('order-count');
     
-    pedidos.forEach(pedido => {
-        const statusClass = pedido.status.toLowerCase().replace(/\s+/g, '-');
+    lista.innerHTML = '';
+    counter.innerText = `${pedidos.length} pedidos`;
+    
+    pedidos.forEach(p => {
         const div = document.createElement('div');
-        div.className = 'card';
+        div.className = 'order-card';
         div.innerHTML = `
-            <div class="card-info">
-                <strong>${pedido.cliente}</strong>
-                <span class="badge status-${statusClass}">${pedido.status}</span>
+            <div class="order-main">
+                <strong>${p.cliente}</strong>
+                <span class="status-pill">${p.status}</span>
             </div>
-            <div class="card-actions">
-                <button class="btn-card-edit" onclick="abrirModalEditar(${pedido.id}, '${pedido.cliente}', '${pedido.status}')">✏️ Editar</button>
-                <button class="btn-card-delete" onclick="abrirModalExcluir(${pedido.id})">🗑️ Excluir</button>
+            <div class="order-actions">
+                <button class="btn-icon btn-edit" onclick="abrirModalEditar(${p.id}, '${p.cliente}', '${p.status}')">✏️</button>
+                <button class="btn-icon btn-delete" onclick="abrirModalExcluir(${p.id})">🗑️</button>
             </div>
         `;
         lista.appendChild(div);
     });
 }
 
+// ... (Mantenha as funções abrirModalEditar, fecharModal, salvarEdicao, etc., que já tínhamos)
+// Apenas certifique-se de que os nomes dos IDs coincidam com o novo HTML
+
 async function criarPedido() {
     const cliente = document.getElementById('cliente').value;
     const status = document.getElementById('status').value;
-    if(!cliente) return alert('Por favor, digite o nome do cliente.');
-
+    if(!cliente) return;
     await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cliente, status })
     });
-    
     document.getElementById('cliente').value = '';
     carregarPedidos();
 }
 
-// Funções do Modal de Edição
 function abrirModalEditar(id, cliente, status) {
     document.getElementById('edit-id').value = id;
     document.getElementById('edit-cliente').value = cliente;
@@ -47,34 +49,27 @@ function abrirModalEditar(id, cliente, status) {
     document.getElementById('modal-editar').style.display = 'block';
 }
 
-function fecharModal() {
-    document.getElementById('modal-editar').style.display = 'none';
-}
+function fecharModal() { document.getElementById('modal-editar').style.display = 'none'; }
 
 async function salvarEdicao() {
     const id = document.getElementById('edit-id').value;
     const cliente = document.getElementById('edit-cliente').value;
     const status = document.getElementById('edit-status').value;
-
     await fetch(`${apiUrl}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cliente, status })
     });
-    
     fecharModal();
     carregarPedidos();
 }
 
-// Funções do Modal de Exclusão
 function abrirModalExcluir(id) {
     document.getElementById('delete-id').value = id;
     document.getElementById('modal-excluir').style.display = 'block';
 }
 
-function fecharModalExcluir() {
-    document.getElementById('modal-excluir').style.display = 'none';
-}
+function fecharModalExcluir() { document.getElementById('modal-excluir').style.display = 'none'; }
 
 async function confirmarExclusao() {
     const id = document.getElementById('delete-id').value;
@@ -83,9 +78,8 @@ async function confirmarExclusao() {
     carregarPedidos();
 }
 
-// Fechar ao clicar fora
-window.onclick = function(event) {
-    if (event.target.className === 'modal') {
+window.onclick = function(e) {
+    if (e.target.className === 'modal-overlay') {
         fecharModal();
         fecharModalExcluir();
     }
