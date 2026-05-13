@@ -11,13 +11,19 @@
         <h1>Controle de Pedidos</h1>
         
         <div class="form-container">
-            <h3>Novo Pedido</h3>
-            <input type="text" id="cliente" placeholder="Nome do Cliente">
-            <select id="status">
-                <option value="Pendente">Pendente</option>
-                <option value="Em Andamento">Em Andamento</option>
-                <option value="Concluído">Concluído</option>
-            </select>
+            <h3 style="grid-column: 1 / -1; margin-top: 0;">Novo Pedido</h3>
+            <div>
+                <label style="display:block; font-size:12px; font-weight:bold; color:var(--secondary);">Cliente</label>
+                <input type="text" id="cliente" placeholder="Nome do Cliente">
+            </div>
+            <div>
+                <label style="display:block; font-size:12px; font-weight:bold; color:var(--secondary);">Status</label>
+                <select id="status">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Concluído">Concluído</option>
+                </select>
+            </div>
             <button onclick="criarPedido()">Salvar Pedido</button>
         </div>
 
@@ -26,6 +32,26 @@
             <ul id="lista-pedidos"></ul>
         </div>
     </div>
+
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <h3>Editar Pedido</h3>
+            <input type="hidden" id="edit-id">
+            <label>Nome do Cliente:</label>
+            <input type="text" id="edit-cliente">
+            <label>Status:</label>
+            <select id="edit-status">
+                <option value="Pendente">Pendente</option>
+                <option value="Em Andamento">Em Andamento</option>
+                <option value="Concluído">Concluído</option>
+            </select>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                <button onclick="salvarEdicao()">Confirmar Alteração</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
