@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DashOrders | Sistema de Gestão Logística</title>
+    <title>DashOrders PRO | Dark Mode</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,41 +11,41 @@
     <div class="container">
         <header>
             <div class="brand">
-                <h1>DashOrders</h1>
-                <p>Logística e Controle de Operações</p>
+                <h1>🛸 DashOrders <span class="badge-pro">PRO</span></h1>
+                <p>Logística & Controle • Grupo 6</p>
             </div>
             <div class="stats-badge">
-                <span id="total-pedidos">0</span> Pedidos Ativos
+                <span id="total-pedidos">0</span> Registros ativos
             </div>
         </header>
 
-        <section class="form-section">
-            <h3>Novo Registro</h3>
+        <section class="card">
+            <h3>➕ Novo Registro</h3>
             <div class="input-group">
                 <div class="field">
-                    <label>Cliente</label>
-                    <input type="text" id="cliente" placeholder="Nome do cliente ou empresa...">
+                    <label>Nome do Cliente</label>
+                    <input type="text" id="cliente" placeholder="Ex: Roni Herculano">
                 </div>
                 <div class="field">
-                    <label>Status</label>
+                    <label>Prioridade / Status</label>
                     <select id="status">
-                        <option value="Pendente">Pendente</option>
-                        <option value="Em Andamento">Em Andamento</option>
-                        <option value="Concluído">Concluído</option>
+                        <option value="Pendente">⏳ Pendente</option>
+                        <option value="Em Andamento">⚙️ Em Andamento</option>
+                        <option value="Concluído">✅ Concluído</option>
                     </select>
                 </div>
-                <button class="btn-main" onclick="criarPedido()">Lançar Pedido</button>
+                <button class="btn-primary" onclick="criarPedido()">Lançar Pedido</button>
             </div>
         </section>
 
-        <section class="list-section">
-            <h3>Pedidos em Fluxo</h3>
+        <section class="card">
+            <h3>📦 Fluxo de Pedidos</h3>
             <ul id="lista-pedidos"></ul>
         </section>
     </div>
 
     <div id="modal-editar" class="modal-overlay">
-        <div class="modal-box text-left">
+        <div class="modal-box">
             <h3>Editar Registro</h3>
             <input type="hidden" id="edit-id">
             <div class="field">
@@ -61,20 +61,21 @@
                 </select>
             </div>
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
-                <button class="btn-main" onclick="salvarEdicao()">Salvar Alterações</button>
+                <button class="btn-sec" onclick="fecharModal()">Cancelar</button>
+                <button class="btn-primary" onclick="salvarEdicao()">Salvar Alterações</button>
             </div>
         </div>
     </div>
 
     <div id="modal-confirm" class="modal-overlay">
         <div class="modal-box">
-            <h3>Confirmar Exclusão</h3>
-            <p>Deseja realmente remover este registro do sistema? Esta operação não pode ser revertida.</p>
+            <div class="icon-warning">⚠️</div>
+            <h3>Remover Registro?</h3>
+            <p>Esta ação não pode ser desfeita no banco de dados.</p>
             <input type="hidden" id="id-para-deletar">
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="fecharModalConfirm()">Cancelar</button>
-                <button class="btn-confirm" onclick="executarExclusao()">Confirmar</button>
+                <button class="btn-sec" onclick="fecharModalConfirm()">Voltar</button>
+                <button class="btn-danger" onclick="executarExclusao()">Confirmar</button>
             </div>
         </div>
     </div>
