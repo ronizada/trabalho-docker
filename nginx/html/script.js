@@ -7,27 +7,26 @@ async function carregarPedidos() {
     const counter = document.getElementById('order-count');
     
     lista.innerHTML = '';
-    counter.innerText = `${pedidos.length} pedidos`;
+    counter.innerText = `${pedidos.length} registros no total`;
     
     pedidos.forEach(p => {
         const div = document.createElement('div');
-        div.className = 'order-card';
+        div.className = 'order-item';
         div.innerHTML = `
-            <div class="order-main">
-                <strong>${p.cliente}</strong>
-                <span class="status-pill">${p.status}</span>
+            <div class="item-info">
+                <div style="font-weight: 600; margin-bottom: 4px;">${p.cliente}</div>
+                <span class="item-status">${p.status}</span>
             </div>
-            <div class="order-actions">
-                <button class="btn-icon btn-edit" onclick="abrirModalEditar(${p.id}, '${p.cliente}', '${p.status}')">✏️</button>
-                <button class="btn-icon btn-delete" onclick="abrirModalExcluir(${p.id})">🗑️</button>
+            <div class="item-actions">
+                <button class="btn-flat" style="padding: 4px 8px; font-size: 0.8rem;" onclick="abrirModalEditar(${p.id}, '${p.cliente}', '${p.status}')">Editar</button>
+                <button class="btn-flat" style="padding: 4px 8px; font-size: 0.8rem; color: #b91c1c;" onclick="abrirModalExcluir(${p.id})">Remover</button>
             </div>
         `;
         lista.appendChild(div);
     });
 }
 
-// ... (Mantenha as funções abrirModalEditar, fecharModal, salvarEdicao, etc., que já tínhamos)
-// Apenas certifique-se de que os nomes dos IDs coincidam com o novo HTML
+// ... (Funções de Modal e API mantidas, mas sem alertas)
 
 async function criarPedido() {
     const cliente = document.getElementById('cliente').value;
@@ -79,7 +78,7 @@ async function confirmarExclusao() {
 }
 
 window.onclick = function(e) {
-    if (e.target.className === 'modal-overlay') {
+    if (e.target.className === 'modal-bg') {
         fecharModal();
         fecharModalExcluir();
     }
