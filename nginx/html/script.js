@@ -1,89 +1,74 @@
-const apiUrl = '/api/pedidos';
+const API = '/api/pedidos';
 
-function showToast(msg) {
-    const container = document.getElementById('toast-container');
-    const t = document.createElement('div');
-    t.className = 'toast';
-    t.innerText = msg;
-    container.appendChild(t);
-    setTimeout(() => t.remove(), 3000);
-}
-
-async function carregarPedidos() {
-    const res = await fetch(apiUrl);
-    const pedidos = await res.json();
-    document.getElementById('total-pedidos').innerText = pedidos.length;
-    const lista = document.getElementById('lista-pedidos');
-    lista.innerHTML = '';
+async function list() {
+    const r = await fetch(API);
+    const data = await r.json();
+    document.getElementById('reg-count').innerText = data.length.toString().padStart(2, '0');
+    const container = document.getElementById('data-list');
+    container.innerHTML = '';
     
-    pedidos.forEach(p => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <div>
-                <strong>${p.cliente}</strong><br>
-                <span class="status-badge">${p.status.toUpperCase()}</span>
-            </div>
-            <div class="actions">
-                <button class="btn-sec" onclick="editarPedido(${p.id}, '${p.cliente}', '${p.status}')">Editar</button>
-                <button class="btn-danger" onclick="deletarPedido(${p.id})">Remover</button>
+    data.forEach(i => {
+        const div = document.createElement('div');
+        div.className = 'data-row';
+        div.innerHTML = `
+            <span class="col-name">${i.cliente.toUpperCase()}</span>
+            <span class="col-status">[ ${i.status.toUpperCase()} ]</span>
+            <div class="col-actions">
+                <button class="btn-opt" onclick="openEdit(${i.id}, '${i.cliente}', '${i.status}')">EDIT</button>
+                <button class="btn-opt" onclick="openDel(${i.id})">DROP</button>
             </div>
         `;
-        lista.appendChild(li);
+        container.appendChild(div);
     });
 }
 
-async function criarPedido() {
+async function criar() {
     const cliente = document.getElementById('cliente').value;
     const status = document.getElementById('status').value;
-    if(!cliente) return showToast("Digite o nome!");
+    if(!cliente) return;
 
-    await fetch(apiUrl, {
+    await fetch(API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cliente, status })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({cliente, status})
     });
     document.getElementById('cliente').value = '';
-    showToast("Pedido lançado!");
-    carregarPedidos();
+    list();
 }
 
-function editarPedido(id, cliente, status) {
+function openEdit(id, cliente, status) {
     document.getElementById('edit-id').value = id;
     document.getElementById('edit-cliente').value = cliente;
     document.getElementById('edit-status').value = status;
-    document.getElementById('modal-editar').style.display = 'block';
+    document.getElementById('modal-edit').style.display = 'block';
 }
 
-function fecharModal() { document.getElementById('modal-editar').style.display = 'none'; }
-
-async function salvarEdicao() {
+async function salvar() {
     const id = document.getElementById('edit-id').value;
     const cliente = document.getElementById('edit-cliente').value;
     const status = document.getElementById('edit-status').value;
 
-    await fetch(`${apiUrl}/${id}`, {
+    await fetch(`${API}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cliente, status })
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({cliente, status})
     });
-    fecharModal();
-    showToast("Pedido atualizado!");
-    carregarPedidos();
+    closeModal('modal-edit');
+    list();
 }
 
-function deletarPedido(id) {
-    document.getElementById('id-para-deletar').value = id;
-    document.getElementById('modal-confirm').style.display = 'block';
+function openDel(id) {
+    document.getElementById('del-id').value = id;
+    document.getElementById('modal-del').style.display = 'block';
 }
 
-function fecharModalConfirm() { document.getElementById('modal-confirm').style.display = 'none'; }
-
-async function executarExclusao() {
-    const id = document.getElementById('id-para-deletar').value;
-    await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
-    fecharModalConfirm();
-    showToast("Removido com sucesso!");
-    carregarPedidos();
+async function confirmarDel() {
+    const id = document.getElementById('del-id').value;
+    await fetch(`${API}/${id}`, {method: 'DELETE'});
+    closeModal('modal-del');
+    list();
 }
 
-carregarPedidos();
+function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+list();

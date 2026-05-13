@@ -3,84 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DashOrders PRO | Dark Mode</title>
+    <title>SYSTEM CONTROL v1.0</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="brand">
-                <h1>🛸 DashOrders <span class="badge-pro">PRO</span></h1>
-                <p>Logística & Controle • Grupo 6</p>
+    <div class="app-wrapper">
+        <header class="main-header">
+            <div class="logo-area">
+                <span class="system-id">SYSTEM CONTROL / / GRUPO 06</span>
+                <span class="status-indicator">ONLINE</span>
             </div>
-            <div class="stats-badge">
-                <span id="total-pedidos">0</span> Registros ativos
+            <div class="data-summary">
+                COUNT: <span id="reg-count">00</span>
             </div>
         </header>
 
-        <section class="card">
-            <h3>➕ Novo Registro</h3>
-            <div class="input-group">
-                <div class="field">
-                    <label>Nome do Cliente</label>
-                    <input type="text" id="cliente" placeholder="Ex: Roni Herculano">
+        <main class="content">
+            <section class="action-panel">
+                <div class="panel-header">REGISTRAR ENTRADA</div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>CLIENTE / IDENTIFICAÇÃO</label>
+                        <input type="text" id="cliente" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>CLASSIFICAÇÃO</label>
+                        <select id="status">
+                            <option value="Pendente">PENDENTE</option>
+                            <option value="Em Andamento">EM ANDAMENTO</option>
+                            <option value="Concluido">CONCLUIDO</option>
+                        </select>
+                    </div>
+                    <button class="btn-submit" onclick="criar()">EXECUTAR</button>
                 </div>
-                <div class="field">
-                    <label>Prioridade / Status</label>
-                    <select id="status">
-                        <option value="Pendente">⏳ Pendente</option>
-                        <option value="Em Andamento">⚙️ Em Andamento</option>
-                        <option value="Concluído">✅ Concluído</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="criarPedido()">Lançar Pedido</button>
-            </div>
-        </section>
+            </section>
 
-        <section class="card">
-            <h3>📦 Fluxo de Pedidos</h3>
-            <ul id="lista-pedidos"></ul>
-        </section>
+            <section class="list-panel">
+                <div class="panel-header">REGISTROS EM BANCO</div>
+                <div class="table-header">
+                    <span class="col-name">ID / NOME</span>
+                    <span class="col-status">STATUS</span>
+                    <span class="col-actions">AÇÕES</span>
+                </div>
+                <div id="data-list" class="data-list"></div>
+            </section>
+        </main>
     </div>
 
-    <div id="modal-editar" class="modal-overlay">
-        <div class="modal-box">
-            <h3>Editar Registro</h3>
+    <div id="modal-edit" class="overlay">
+        <div class="modal">
+            <div class="panel-header">MODIFICAR DADOS</div>
             <input type="hidden" id="edit-id">
-            <div class="field">
-                <label>Nome do Cliente</label>
+            <div class="modal-body">
+                <label>NOME</label>
                 <input type="text" id="edit-cliente">
-            </div>
-            <div class="field">
-                <label>Status</label>
+                <label>STATUS</label>
                 <select id="edit-status">
-                    <option value="Pendente">Pendente</option>
-                    <option value="Em Andamento">Em Andamento</option>
-                    <option value="Concluído">Concluído</option>
+                    <option value="Pendente">PENDENTE</option>
+                    <option value="Em Andamento">EM ANDAMENTO</option>
+                    <option value="Concluido">CONCLUIDO</option>
                 </select>
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-sec" onclick="fecharModal()">Cancelar</button>
-                <button class="btn-primary" onclick="salvarEdicao()">Salvar Alterações</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-confirm" class="modal-overlay">
-        <div class="modal-box">
-            <div class="icon-warning">⚠️</div>
-            <h3>Remover Registro?</h3>
-            <p>Esta ação não pode ser desfeita no banco de dados.</p>
-            <input type="hidden" id="id-para-deletar">
-            <div class="modal-buttons">
-                <button class="btn-sec" onclick="fecharModalConfirm()">Voltar</button>
-                <button class="btn-danger" onclick="executarExclusao()">Confirmar</button>
+                <div class="modal-btns">
+                    <button class="btn-off" onclick="closeModal('modal-edit')">CANCELAR</button>
+                    <button class="btn-on" onclick="salvar()">GRAVAR</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="toast-container" class="toast-container"></div>
+    <div id="modal-del" class="overlay">
+        <div class="modal">
+            <div class="panel-header alert">CONFIRMAR EXCLUSÃO</div>
+            <input type="hidden" id="del-id">
+            <div class="modal-body">
+                <p>O REGISTRO SERÁ REMOVIDO PERMANENTEMENTE DO SISTEMA.</p>
+                <div class="modal-btns">
+                    <button class="btn-off" onclick="closeModal('modal-del')">VOLTAR</button>
+                    <button class="btn-danger" onclick="confirmarDel()">CONFIRMAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
