@@ -1,8 +1,10 @@
 :root {
-    --primary: #2563eb;
+    --primary: #4f46e5;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
     --bg: #f8fafc;
     --text: #1e293b;
-    --danger: #dc2626;
 }
 
 body {
@@ -22,55 +24,91 @@ header {
     margin-bottom: 40px;
 }
 
+h1 { color: var(--primary); margin: 0; font-size: 2rem; }
+
 .stats-badge {
-    background: white;
+    background: var(--primary);
+    color: white;
     padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
 }
 
-.form-section, .list-section {
+.form-section {
     background: white;
     padding: 24px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    margin-bottom: 24px;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
 .input-group {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
-    gap: 16px;
+    gap: 15px;
     align-items: end;
 }
 
-.field label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #64748b;
+.btn-main {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
+.btn-main:hover { filter: brightness(1.1); }
+
+/* Badges de Status Coloridos */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Cores por Status */
+.status-pendente { background: #fef3c7; color: #92400e; }
+.status-em-andamento { background: #dbeafe; color: #1e40af; }
+.status-concluido { background: #dcfce7; color: #166534; }
+
+/* Lista de Itens */
+li {
+    background: white;
+    margin-bottom: 12px;
+    padding: 18px 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 6px solid var(--primary);
+}
+
+.actions button {
+    padding: 8px 16px;
     border-radius: 6px;
-    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-left: 8px;
 }
 
-.btn-main { background: var(--primary); color: white; border: none; padding: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-.btn-confirm { background: var(--danger); color: white; border: none; padding: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-.btn-cancel { background: #f1f5f9; color: #475569; border: none; padding: 11px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btn-edit { background: var(--warning); color: white; }
+.btn-remove { background: var(--danger); color: white; }
 
-/* Modais */
+/* Modais (Estilo fixado) */
 .modal-overlay {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(4px);
     z-index: 9999;
 }
@@ -80,41 +118,7 @@ input, select {
     width: 90%;
     max-width: 400px;
     margin: 15vh auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    padding: 32px;
+    border-radius: 20px;
+    text-align: center;
 }
-
-.text-left { text-align: left; }
-
-/* Lista de Itens */
-li {
-    border-bottom: 1px solid #f1f5f9;
-    padding: 16px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-li:last-child { border-bottom: none; }
-
-.status-badge {
-    font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
-    background: #f1f5f9;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-}
-
-.actions button {
-    background: transparent;
-    border: none;
-    color: var(--primary);
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: 15px;
-    font-size: 13px;
-}
-
-.actions .btn-remove { color: var(--danger); }
