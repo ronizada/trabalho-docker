@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DashOrders | Grupo 6</title>
+    <title>DashOrders | Sistema de Gestão Logística</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,27 +11,27 @@
     <div class="container">
         <header>
             <div class="brand">
-                <h1>🚀 DashOrders</h1>
-                <p>Logística & Controle • Grupo 6</p>
+                <h1>DashOrders</h1>
+                <p>Logística e Controle de Operações</p>
             </div>
             <div class="stats-badge">
-                <span id="total-pedidos">0</span> Registros
+                <span id="total-pedidos">0</span> Pedidos Ativos
             </div>
         </header>
 
         <section class="form-section">
-            <h3>➕ Novo Registro</h3>
+            <h3>Novo Registro</h3>
             <div class="input-group">
                 <div class="field">
                     <label>Cliente</label>
-                    <input type="text" id="cliente" placeholder="Nome completo...">
+                    <input type="text" id="cliente" placeholder="Nome do cliente ou empresa...">
                 </div>
                 <div class="field">
                     <label>Status</label>
                     <select id="status">
-                        <option value="Pendente">⏳ Pendente</option>
-                        <option value="Em Andamento">⚙️ Em Andamento</option>
-                        <option value="Concluído">✅ Concluído</option>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Concluído">Concluído</option>
                     </select>
                 </div>
                 <button class="btn-main" onclick="criarPedido()">Lançar Pedido</button>
@@ -39,15 +39,47 @@
         </section>
 
         <section class="list-section">
-            <h3>📦 Pedidos em Fluxo</h3>
+            <h3>Pedidos em Fluxo</h3>
             <ul id="lista-pedidos"></ul>
         </section>
     </div>
 
-    <div id="modal-editar" class="modal">...</div>
-    <div id="modal-excluir" class="modal">...</div>
-    <div id="toast-container" class="toast-container"></div>
+    <div id="modal-editar" class="modal-overlay">
+        <div class="modal-box text-left">
+            <h3>Editar Registro</h3>
+            <input type="hidden" id="edit-id">
+            <div class="field">
+                <label>Nome do Cliente</label>
+                <input type="text" id="edit-cliente">
+            </div>
+            <div class="field">
+                <label>Status</label>
+                <select id="edit-status">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Concluído">Concluído</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+                <button class="btn-main" onclick="salvarEdicao()">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
 
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Confirmar Exclusão</h3>
+            <p>Deseja realmente remover este registro do sistema? Esta operação não pode ser revertida.</p>
+            <input type="hidden" id="id-para-deletar">
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="fecharModalConfirm()">Cancelar</button>
+                <button class="btn-confirm" onclick="executarExclusao()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
     <script src="script.js"></script>
 </body>
 </html>

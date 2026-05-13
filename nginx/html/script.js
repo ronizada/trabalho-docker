@@ -1,86 +1,90 @@
 const apiUrl = '/api/pedidos';
 
-// Carregar e Contar Pedidos
-async function carregarPedidos() {
-    try {
-        const res = await fetch(apiUrl);
-        const pedidos = await res.json();
-        
-        // Atualiza o contador (ID: total-pedidos)
-        const contador = document.getElementById('total-pedidos');
-        if (contador) contador.innerText = pedidos.length;
-        
-        const lista = document.getElementById('lista-pedidos');
-        lista.innerHTML = '';
-        
-        pedidos.forEach(pedido => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="pedido-info">
-                    <strong>${pedido.cliente}</strong>
-                    <span class="status-badge">${pedido.status.toUpperCase()}</span>
-                </div>
-                <div class="actions">
-                    <button class="btn-edit" style="background:#f59e0b; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; margin-right:5px;" onclick="editarPedido(${pedido.id}, '${pedido.cliente}', '${pedido.status}')">Editar</button>
-                    <button class="btn-delete" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;" onclick="deletarPedido(${pedido.id})">Remover</button>
-                </div>
-            `;
-            lista.appendChild(li);
-        });
-    } catch (err) {
-        console.error("Erro ao carregar:", err);
-    }
+function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerText = msg;
+    container.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
 }
 
-// Criar Pedido
+async function carregarPedidos() {
+    const res = await fetch(apiUrl);
+    const dados = await res.json();
+    document.getElementById('total-pedidos').innerText = dados.length;
+    const lista = document.getElementById('lista-pedidos');
+    lista.innerHTML = '';
+    dados.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div>
+                <div style="font-weight:600">${p.cliente}</div>
+                <span class="status-badge">${p.status}</span>
+            </div>
+            <div class="actions">
+                <button onclick="editarPedido(${p.id},'${p.cliente}','${p.status}')">Editar</button>
+                <button class="btn-remove" onclick="abrirModalExcluir(${p.id})">Remover</button>
+            </div>
+        `;
+        lista.appendChild(li);
+    });
+}
+
 async function criarPedido() {
-    const clienteInput = document.getElementById('cliente');
-    const statusSelect = document.getElementById('status');
-    
-    if(!clienteInput.value) {
-        alert('Por favor, informe o nome do cliente!');
+    const nome = document.getElementById('cliente').value;
+    const status = document.getElementById('status').value;
+    if(!nome) {
+        showToast("Preencha o nome do cliente");
         return;
     }
-
     await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            cliente: clienteInput.value, 
-            status: statusSelect.value 
-        })
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({cliente: nome, status})
     });
-    
-    clienteInput.value = '';
+    document.getElementById('cliente').value = '';
     carregarPedidos();
 }
 
-// Funções de Exclusão
-function deletarPedido(id) {
-    if(confirm("Deseja realmente remover este registro?")) {
-        executarExclusao(id);
-    }
+function abrirModalExcluir(id) {
+    document.getElementById('id-para-deletar').value = id;
+    document.getElementById('modal-confirm').style.display = 'block';
 }
 
-async function executarExclusao(id) {
-    await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+function fecharModalConfirm() {
+    document.getElementById('modal-confirm').style.display = 'none';
+}
+
+async function executarExclusao() {
+    const id = document.getElementById('id-para-deletar').value;
+    await fetch(`${apiUrl}/${id}`, {method:'DELETE'});
+    fecharModalConfirm();
     carregarPedidos();
 }
 
-// Funções de Edição (Prompt Simples para garantir que funcione agora)
-async function editarPedido(id, clienteAtual, statusAtual) {
-    const novoNome = prompt("Novo nome do cliente:", clienteAtual);
-    const novoStatus = prompt("Novo status (Pendente, Em Andamento, Concluído):", statusAtual);
-
-    if (novoNome && novoStatus) {
-        await fetch(`${apiUrl}/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cliente: novoNome, status: novoStatus })
-        });
-        carregarPedidos();
-    }
+function editarPedido(id, c, s) {
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-cliente').value = c;
+    document.getElementById('edit-status').value = s;
+    document.getElementById('modal-editar').style.display = 'block';
 }
 
-// Inicialização
+function fecharModal() {
+    document.getElementById('modal-editar').style.display = 'none';
+}
+
+async function salvarEdicao() {
+    const id = document.getElementById('edit-id').value;
+    const c = document.getElementById('edit-cliente').value;
+    const s = document.getElementById('edit-status').value;
+    await fetch(`${apiUrl}/${id}`, {
+        method:'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({cliente: c, status: s})
+    });
+    fecharModal();
+    carregarPedidos();
+}
+
 carregarPedidos();
