@@ -5,9 +5,9 @@ services:
     image: postgres:15
     container_name: db_pedidos
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 20221si028
-      POSTGRES_DB: pedidos_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -22,10 +22,10 @@ services:
     build: ./backend
     container_name: api_pedidos
     environment:
-      - DB_HOST=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=20221si028
-      - DB_NAME=pedidos_db
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     depends_on:
       postgres:
         condition: service_healthy
