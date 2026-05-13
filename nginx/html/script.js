@@ -57,4 +57,24 @@ async function editarPedido(id, clienteAtual, statusAtual) {
 }
 
 // Carrega os pedidos ao abrir a página
-carregarPedidos();
+async function carregarPedidos() {
+    const res = await fetch(apiUrl);
+    const pedidos = await res.json();
+    const lista = document.getElementById('lista-pedidos');
+    lista.innerHTML = '';
+    
+    pedidos.forEach(pedido => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="pedido-info">
+                <strong>${pedido.cliente}</strong>
+                <span class="status-badge">${pedido.status}</span>
+            </div>
+            <div class="actions">
+                <button class="btn-edit" onclick="editarPedido(${pedido.id}, '${pedido.cliente}', '${pedido.status}')">Editar</button>
+                <button class="btn-delete" onclick="deletarPedido(${pedido.id})">Excluir</button>
+            </div>
+        `;
+        lista.appendChild(li);
+    });
+}
