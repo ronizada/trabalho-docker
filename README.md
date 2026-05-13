@@ -2,6 +2,8 @@
 
 ## Integrantes
 - Roni Herculano (Matrícula: 20221si028)
+- Lavynnia Ribeiro (Matrícula: 20241si015)
+- Caio Fontana (Matrícula: 20241si004)
 
 ## Tema do Grupo
 **Grupo 6 - Controle de Pedidos** (Entidades: Pedidos e Itens do Pedido)
