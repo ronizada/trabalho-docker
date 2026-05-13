@@ -3,88 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYSTEM CONTROL v1.0</title>
+    <title>System Control v2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-wrapper">
-        <header class="main-header">
-            <div class="logo-area">
-                <span class="system-id">SYSTEM CONTROL / / GRUPO 06</span>
-                <span class="status-indicator">ONLINE</span>
-            </div>
-            <div class="data-summary">
-                COUNT: <span id="reg-count">00</span>
-            </div>
-        </header>
 
-        <main class="content">
-            <section class="action-panel">
-                <div class="panel-header">REGISTRAR ENTRADA</div>
-                <div class="input-row">
-                    <div class="input-group">
-                        <label>CLIENTE / IDENTIFICAÇÃO</label>
-                        <input type="text" id="cliente" autocomplete="off">
-                    </div>
-                    <div class="input-group">
-                        <label>CLASSIFICAÇÃO</label>
-                        <select id="status">
-                            <option value="Pendente">PENDENTE</option>
-                            <option value="Em Andamento">EM ANDAMENTO</option>
-                            <option value="Concluido">CONCLUIDO</option>
-                        </select>
-                    </div>
-                    <button class="btn-submit" onclick="criar()">EXECUTAR</button>
-                </div>
-            </section>
+<div class="app">
+    <header class="header">
+        <div class="brand">
+            <span class="brand-title">&#9632; System Control</span>
+            <span class="brand-sub">Grupo 06 &middot; v2.0</span>
+        </div>
+        <span class="badge-online">Online</span>
+    </header>
 
-            <section class="list-panel">
-                <div class="panel-header">REGISTROS EM BANCO</div>
-                <div class="table-header">
-                    <span class="col-name">ID / NOME</span>
-                    <span class="col-status">STATUS</span>
-                    <span class="col-actions">AÇÕES</span>
-                </div>
-                <div id="data-list" class="data-list"></div>
-            </section>
-        </main>
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-label">Total de registros</div>
+            <div class="stat-val" id="count-total">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Pendentes</div>
+            <div class="stat-val s-warn" id="count-pend">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Concluídos</div>
+            <div class="stat-val s-ok" id="count-done">0</div>
+        </div>
     </div>
 
-    <div id="modal-edit" class="overlay">
-        <div class="modal">
-            <div class="panel-header">MODIFICAR DADOS</div>
-            <input type="hidden" id="edit-id">
-            <div class="modal-body">
-                <label>NOME</label>
+    <div class="card">
+        <div class="card-header">
+            <span class="card-header-label">+ Registrar entrada</span>
+        </div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="field">
+                    <label for="f-cliente">Cliente / identificação</label>
+                    <input type="text" id="f-cliente" placeholder="Nome do cliente..." autocomplete="off">
+                </div>
+                <div class="field">
+                    <label for="f-status">Classificação</label>
+                    <select id="f-status">
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em Andamento">Em andamento</option>
+                        <option value="Concluido">Concluído</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="criar()">Registrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-header-label">&#9776; Registros em banco</span>
+            <span id="badge-count" class="badge-count"></span>
+        </div>
+        <div class="table-head">
+            <span>Cliente</span>
+            <span>Status</span>
+            <span class="col-right">Ações</span>
+        </div>
+        <div id="data-list"></div>
+    </div>
+</div>
+
+<!-- Modal Editar -->
+<div id="modal-edit" class="overlay" onclick="overlayClick(event,'modal-edit')">
+    <div class="modal">
+        <div class="modal-header">&#9998; Modificar dados</div>
+        <input type="hidden" id="edit-id">
+        <div class="modal-body">
+            <div class="field">
+                <label for="edit-cliente">Nome</label>
                 <input type="text" id="edit-cliente">
-                <label>STATUS</label>
+            </div>
+            <div class="field">
+                <label for="edit-status">Status</label>
                 <select id="edit-status">
-                    <option value="Pendente">PENDENTE</option>
-                    <option value="Em Andamento">EM ANDAMENTO</option>
-                    <option value="Concluido">CONCLUIDO</option>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em andamento</option>
+                    <option value="Concluido">Concluído</option>
                 </select>
-                <div class="modal-btns">
-                    <button class="btn-off" onclick="closeModal('modal-edit')">CANCELAR</button>
-                    <button class="btn-on" onclick="salvar()">GRAVAR</button>
-                </div>
             </div>
         </div>
-    </div>
-
-    <div id="modal-del" class="overlay">
-        <div class="modal">
-            <div class="panel-header alert">CONFIRMAR EXCLUSÃO</div>
-            <input type="hidden" id="del-id">
-            <div class="modal-body">
-                <p>O REGISTRO SERÁ REMOVIDO PERMANENTEMENTE DO SISTEMA.</p>
-                <div class="modal-btns">
-                    <button class="btn-off" onclick="closeModal('modal-del')">VOLTAR</button>
-                    <button class="btn-danger" onclick="confirmarDel()">CONFIRMAR</button>
-                </div>
-            </div>
+        <div class="modal-foot">
+            <button class="btn" onclick="closeModal('modal-edit')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvar()">&#10003; Gravar</button>
         </div>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<!-- Modal Deletar -->
+<div id="modal-del" class="overlay" onclick="overlayClick(event,'modal-del')">
+    <div class="modal">
+        <div class="modal-header danger-header">&#9888; Confirmar exclusão</div>
+        <input type="hidden" id="del-id">
+        <div class="modal-body">
+            <p class="warn-text">O registro será removido permanentemente do sistema. Esta ação não pode ser desfeita.</p>
+        </div>
+        <div class="modal-foot">
+            <button class="btn" onclick="closeModal('modal-del')">Voltar</button>
+            <button class="btn btn-danger" onclick="confirmarDel()">&#128465; Confirmar exclusão</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <span class="toast-dot" id="toast-dot"></span>
+    <span id="toast-msg"></span>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
