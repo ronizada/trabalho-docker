@@ -3,93 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📦 Delivery Manager | Pro</title>
+    <title>DashOrders | Grupo 6</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-blob"></div>
-    
     <div class="container">
-        <header class="main-header">
-            <div class="logo-area">
-                <span class="logo-icon">🚀</span>
-                <div>
-                    <h1>DashOrders</h1>
-                    <p>Logística & Controle • Grupo 6</p>
-                </div>
+        <header>
+            <div class="brand">
+                <h1>🚀 DashOrders</h1>
+                <p>Logística & Controle • Grupo 6</p>
             </div>
-            <div class="user-profile">
-                <span>Olá, <strong>Roni Herculano</strong></span>
+            <div class="stats-badge">
+                <span id="total-pedidos">0</span> Registros
             </div>
         </header>
-        
-        <main class="dashboard-grid">
-            <aside class="side-panel">
-                <div class="glass-card">
-                    <h3>➕ Novo Registro</h3>
-                    <div class="form-group">
-                        <label>Cliente</label>
-                        <input type="text" id="cliente" placeholder="Nome completo...">
-                    </div>
-                    <div class="form-group">
-                        <label>Prioridade/Status</label>
-                        <select id="status">
-                            <option value="Pendente">⏳ Pendente</option>
-                            <option value="Em Andamento">⚙️ Em Andamento</option>
-                            <option value="Concluído">✅ Concluído</option>
-                        </select>
-                    </div>
-                    <button class="btn-primary" onclick="criarPedido()">Lançar Pedido</button>
+
+        <section class="form-section">
+            <h3>➕ Novo Registro</h3>
+            <div class="input-group">
+                <div class="field">
+                    <label>Cliente</label>
+                    <input type="text" id="cliente" placeholder="Nome completo...">
                 </div>
-            </aside>
-
-            <section class="content-panel">
-                <div class="section-title">
-                    <h3>📦 Pedidos em Fluxo</h3>
-                    <span id="order-count" class="count-badge">0 total</span>
+                <div class="field">
+                    <label>Status</label>
+                    <select id="status">
+                        <option value="Pendente">⏳ Pendente</option>
+                        <option value="Em Andamento">⚙️ Em Andamento</option>
+                        <option value="Concluído">✅ Concluído</option>
+                    </select>
                 </div>
-                <div id="lista-pedidos" class="orders-container">
-                    </div>
-            </section>
-        </main>
+                <button class="btn-main" onclick="criarPedido()">Lançar Pedido</button>
+            </div>
+        </section>
+
+        <section class="list-section">
+            <h3>📦 Pedidos em Fluxo</h3>
+            <ul id="lista-pedidos"></ul>
+        </section>
     </div>
 
-    <div id="modal-editar" class="modal-overlay">
-        <div class="modal-card">
-            <h3>✏️ Atualizar Pedido</h3>
-            <input type="hidden" id="edit-id">
-            <div class="form-group">
-                <label>Cliente</label>
-                <input type="text" id="edit-cliente">
-            </div>
-            <div class="form-group">
-                <label>Status</label>
-                <select id="edit-status">
-                    <option value="Pendente">⏳ Pendente</option>
-                    <option value="Em Andamento">⚙️ Em Andamento</option>
-                    <option value="Concluído">✅ Concluído</option>
-                </select>
-            </div>
-            <div class="modal-btns">
-                <button class="btn-ghost" onclick="fecharModal()">Voltar</button>
-                <button class="btn-primary" onclick="salvarEdicao()">Salvar</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-excluir" class="modal-overlay">
-        <div class="modal-card alert">
-            <div class="alert-icon">🗑️</div>
-            <h3>Remover Registro?</h3>
-            <p>Esta ação não poderá ser revertida no banco de dados.</p>
-            <input type="hidden" id="delete-id">
-            <div class="modal-btns">
-                <button class="btn-ghost" onclick="fecharModalExcluir()">Cancelar</button>
-                <button class="btn-danger" onclick="confirmarExclusao()">Sim, Excluir</button>
-            </div>
-        </div>
-    </div>
+    <div id="modal-editar" class="modal">...</div>
+    <div id="modal-excluir" class="modal">...</div>
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="script.js"></script>
 </body>
